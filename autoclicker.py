@@ -42,19 +42,20 @@ while True:
 
     if result == 'Get Position':
         result = gui.prompt('Wait how many seconds before getting position?')
-        print(result)
         if result == None:
             continue
         time.sleep(int(result) )
         pos = gui.position()
-        print(pos.x)
         gui.confirm(text='Mouse Position was ' + str(pos.x) + ',' + str(pos.y), buttons=['Ok'])
 
     if result == 'Click Mouse':
-        x = gui.prompt('Enter X position')
+        mouse_btn = gui.confirm(text='Mouse button:', buttons=['left', 'right'])
+        if mouse_btn == None:
+            continue
+        x = gui.prompt('Enter X position\nor -1 to skip movement')
         if x == None:
             continue
-        y = gui.prompt('Enter Y position')
+        y = gui.prompt('Enter Y position\nor -1 to skip movement')
         if y == None:
             continue
         num_clicks = gui.prompt('Enter number of clicks')
@@ -67,13 +68,18 @@ while True:
         if init_delay == None:
             continue
         time.sleep(float(init_delay) )
-        gui.click(int(x), int(y), int(num_clicks), float(click_interval) )
+        if int(x) != -1 and int(y) != -1:
+            gui.moveTo(int(x), int(y) )
+        gui.click(clicks=int(num_clicks), interval=float(click_interval), button=mouse_btn)
 
     if result == 'Hold Mouse':
-        x = gui.prompt('Enter X position')
+        mouse_btn = gui.confirm(text='Mouse button:', buttons=['left', 'right'])
+        if mouse_btn == None:
+            continue
+        x = gui.prompt('Enter X position\nor -1 to skip movement')
         if x == None:
             continue
-        y = gui.prompt('Enter Y position')
+        y = gui.prompt('Enter Y position\nor -1 to skip movement')
         if y == None:
             continue
         num_sec = gui.prompt('Enter number of seconds to hold mouse')
@@ -82,9 +88,10 @@ while True:
         init_delay = gui.prompt('Enter number of seconds to wait before starting')
         if init_delay == None:
             continue
-        time.sleep(init_delay)
-        gui.moveTo(int(x), int(y) )
-        gui.mouseDown()
+        time.sleep(float(init_delay) )
+        if int(x) != -1 and int(y) != -1:
+            gui.moveTo(int(x), int(y) )
+        gui.mouseDown(button=mouse_btn)
         time.sleep(float(init_delay) )
         gui.mouseUp()
 
