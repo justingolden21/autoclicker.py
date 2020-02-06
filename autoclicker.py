@@ -92,7 +92,7 @@ try:
             if int(x) != -1 and int(y) != -1:
                 gui.moveTo(int(x), int(y) )
             gui.mouseDown(button=mouse_btn)
-            time.sleep(float(init_delay) )
+            time.sleep(float(num_sec) )
             gui.mouseUp()
 
 except KeyboardInterrupt:
